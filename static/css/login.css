@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    background-color:azure;
+    background-size: cover;
+}
+
+.container {
+    position: absolute;
+    background-color: #061A40;
+    border-radius: 5px;
+    height: 80vh;
+    width: 60vw;
+    margin-left: 20vw;
+    margin-top: 10vh; 
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+
+.title {
+    text-align: center;
+    color: white;
+}
+
+.input {
+    width: 60%;
+    height: 50px;
+    border: 2px solid white;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.submit {
+    width: 30%;
+    height: 50px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
