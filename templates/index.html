@@ -6,32 +6,68 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <title>Accueil</title>
+    <script>
+        function loadmore(){
+            var xml = new XMLHttpRequest();
+            xml.open("POST", "{{ url_for('loadmore') }}", true);
+            xml.setRequestHeader("Content-type", "application/json"); 
+
+            xml.onload = function () {
+                var dataReply = JSON.parse(this.responseText);
+                if (dataReply){
+                    console.log(typeof(dataReply)==="object")
+                    console.log(dataReply)
+                }
+            };
+            var nb = {{games | length}}
+            var pageData = String(nb);
+            var dataSend = JSON.stringify({
+                'page_data': pageData
+            });
+            xml.send(dataSend);
+        }
+
+
+
+
+
+        function openPopup(imageSrc , name , platforms , rdate,rating , tags) {
+            document.getElementById('popupImage').src = imageSrc;
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.querySelector(".name").innerText = name;
+            document.querySelector(".releasedate").innerText = rdate;
+            document.querySelector(".platforms").innerText = platforms;
+            document.querySelector(".rating").innerText = rating;
+            document.querySelector(".tags").innerText = tags;
+        }
+
+        function closePopup() {
+            // Hide the popup and overlay
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+    
+    </script>
 </head>
 <body>
     <div class="nav">
         <div class="logo"><a href="index.html"><img src="{{url_for('static' , filename='imgs/logo.png' )}}" alt="" srcset=""></a>
         </div>
-        <div class="links">
-            <a href="index.html">Accueil</a>
-            <a href="toprating.html">Top Rated</a>
-            <a href="pc.html">PC Games</a> 
-            <a href="console.html">Console Games</a>
-            <a href="contacts.html">contacts</a>
-        </div>
-        <div class="login">
-            <button id="log"><a href="login.html" >login</a></button>
-            <button id="sign"><a href="signup.html">sign up</a></button>
-        </div>
     </div>
     <div class="container">
-        {% for game in games %}
-            <div class="item" onclick="openPopup('{{ game['image_link'] }}', '{{ game['name'] }}', '{{ game['platforms'] }}', '{{ game['release_date'] }}', '{{ game['rating'] }}', '{{ game['tags'] }}')">
-                <img src="{{ game['image_link'] }}" alt="">
-            </div>
-        {% endfor %}
+
+            {% for game in games %}
+                <div class="item" onclick="openPopup('{{ game['image_link'] }}', '{{ game['name'] }}', '{{ game['platforms'] }}', '{{ game['release_date'] }}', '{{ game['rating'] }}', '{{ game['tags'] }}')">
+                    <img src="{{ game['image_link'] }}" alt="">
+                </div>
+            {% endfor %}
+        
+
         <br>
-        <form method="post" action="/">
-            <button type="submit" name="btn" {% if disable %}disabled{% endif %}>Click Me</button>
+        <form method="post"  action="/loadmore">
+            <button type="submit" class="btn" name="btn" onclick="loadmore()" {% if disable %}disabled{% endif %}> {{ btn_value }}</button>
         </form>
 
 
@@ -91,35 +127,6 @@
 
     <div id="overlay" onclick="closePopup()"></div>
     
-    <script>
-        function openPopup(imageSrc , name , platforms , rdate,rating , tags) {
-            document.getElementById('popupImage').src = imageSrc;
-            document.getElementById('popup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            document.querySelector(".name").innerText = name;
-            document.querySelector(".releasedate").innerText = rdate;
-            document.querySelector(".platforms").innerText = platforms;
-            document.querySelector(".rating").innerText = rating;
-            document.querySelector(".tags").innerText = tags;
-        }
-
-        function closePopup() {
-            // Hide the popup and overlay
-            document.getElementById('popup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-        function loadMoreGames() {
-            var currentSize = document.querySelectorAll('.item').length;
-
-            fetch('/?page_size=' + (currentSize + 9))
-                .then(response => response.json())
-                .then(data => {
-                    var container = document.getElementById('game-container');
-                    container.innerHTML += data.html;
-                })
-                .catch(error => console.error('Error:', error));
-        }
     
-    </script>
 </body>
 </html>

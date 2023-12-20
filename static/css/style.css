@@ -18,18 +18,25 @@ a:hover{
     color: black ;
     
 }
-.logo{
+.logo {
     display: flex;
     align-items: center;
+    
 }
-.logo img{
+
+.logo img {
     height: 5vh;
     width: 200px;
     transition: .3s ease-out;
+    position: absolute;
+    left: 30px;
+    bottom: 30%;
 }
-.logo img:hover{
+
+.logo img:hover {
     box-shadow: 0px 0px 30px #0077B6;
 }
+
 .nav{
     top: 0px;
     left: 0px;
@@ -47,6 +54,7 @@ a:hover{
     left: 0;
     
 }
+
 .links a {
     color: #fff;
     margin-right: 25px;
@@ -69,15 +77,24 @@ a:hover{
     width: 100%;
     left: 0;
 }
-.login{
-    justify-content: space-between;
-    
+form{
+    display: flex;
+    justify-content: center;
 }
-.login button{
+form .btn{
+    width: 300px;
+    height: 30px;
+}
+.btn {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
+    
 }
-.login a{
+
+.btn a{
     color: black;
     text-decoration: none;
     margin: 5px;
@@ -89,20 +106,25 @@ button{
     color: #3b82f6;
     border: none;
     border-radius: 8px;
-    width: 80px;
     height: 25px;
+    width: 80px;
     transition: .3s;
 }
-#log:hover{
+.btn:hover{
     background-color: #3b82f6;
     box-shadow: 0 0 0 5px #3b83f65f;
     color: #fff;
 }
-#sign:hover{
-    background-color: #3b82f6;
-    box-shadow: 0 0 0 5px #3b83f65f;
-    color: #fff;
+.btn:disabled {
+    color: #061A40;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
+
+.btn:hover:disabled {
+    border: 2px dashed red;
+}
+
 /*container -------------------------------------------------------------------------------------------------------------------*/
 .container{
     margin-top: 15vh;
@@ -169,7 +191,7 @@ div img{
 .name {
     font-weight: bold;
     color: #061A40;
-    font-size: 45px;
+    font-size: 40px;
     text-align: center;
     padding-left: 5px;
     text-decoration: underline;

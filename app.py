@@ -1,17 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request ,jsonify
 import requests
 import re
 
 app = Flask(__name__)
-nb = 9  # Initialize nb as a global variable
+nb = 6
+btn_value="Show More"
+disable = False
 
 def getgames():
-    global nb  # Declare nb as a global variable within the function
+    global nb
     api_url = "https://api.rawg.io/api/games"
 
     params = {
         'key': 'e987444dc539477fb7d6dbf09a611868',
-        'page_size': nb  # Specify the number of games to retrieve
+        'page_size': nb
     }
 
     response = requests.get(api_url, params=params)
@@ -23,17 +25,8 @@ def getgames():
         print(f"Error {response.status_code}: {response.text}")
         return None
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    global nb  # Declare nb as a global variable within the function
+def getorderedgames (games):
     games_info = []
-
-    if request.method == 'POST':
-        if 'btn' in request.form:
-            nb += 9
-    disable = (nb >= 36)
-    games = getgames()
-
     if games:
         for game_data in games:
             games_info.append({
@@ -47,12 +40,66 @@ def index():
             })
 
         # Convert lists to strings
+
         for i in range(nb):
             games_info[i]["platforms"] = " ".join(games_info[i]["platforms"])
             games_info[i]["stores"] = " ".join(games_info[i]["stores"])
             games_info[i]["tags"] = " ".join(games_info[i]["tags"])
 
-    return render_template('index.html', games=games_info, disable=disable)
+    return games_info
+@app.route('/', methods=['GET'])
+def index():
+
+    global btn_value
+    global nb
+    global disable
+
+    nb=6
+    if nb > 36:
+        nb = 36
+
+    games_info = []
+    games = getgames()
+    games_info = getorderedgames(games)
+
+    return render_template('index.html', games=games_info, disable=disable , btn_value=btn_value)
+
+
+
+
+
+@app.route('/loadmore', methods=['POST'])
+def loadmore():
+    global btn_value
+    global nb
+    global disable
+
+    nb = request.get_json().get('page_data')
+    try:
+        nb = int(nb)
+    except ValueError:
+        nb = 0
+    nb += 6
+
+
+
+
+    disable = (nb >= 36)
+    if disable:
+        nb = 36
+        btn_value = "No More To Show"
+
+    games = getgames()
+    games_info = getorderedgames(games)
+    dataReply = {
+        'games': list(games_info),
+        'disable': "disable",
+        'btn_value': btn_value
+    }
+    print(jsonify(dataReply))
+    return jsonify(dataReply)
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, port=8080)
+
