@@ -1,14 +1,17 @@
-from flask import Flask, render_template, request ,jsonify
+from flask import Flask, render_template, request, jsonify , abort
 import requests
 import re
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/loadmore": {"origins": "http://127.0.0.1:8080"}})
+
 nb = 6
 btn_value="Show More"
 disable = False
 
-def getgames():
-    global nb
+def getgames(nb):
     api_url = "https://api.rawg.io/api/games"
 
     params = {
@@ -53,16 +56,11 @@ def index():
     global btn_value
     global nb
     global disable
-
-    nb=6
-    if nb > 36:
-        nb = 36
-
-    games_info = []
-    games = getgames()
+    games = getgames(nb)
     games_info = getorderedgames(games)
-
-    return render_template('index.html', games=games_info, disable=disable , btn_value=btn_value)
+    nb=len(games_info)
+    nb=6
+    return render_template('index.html', games=games_info)
 
 
 
@@ -74,32 +72,29 @@ def loadmore():
     global nb
     global disable
 
-    nb = request.get_json().get('page_data')
-    try:
-        nb = int(nb)
-    except ValueError:
-        nb = 0
-    nb += 6
+    if request.headers['Content-Type'] == 'application/json':
+        data = request.get_json()
+        nb = data.get('page_data')
+
+        try:
+            nb = int(nb)
+        except ValueError:
+            nb = 0
+        nb += 6
 
 
+        games = getgames(nb)
+        games_info = getorderedgames(games)
 
+        dataReply = {
+            'games': list(games_info),
+            'disable': "disable",
+            'btn_value': btn_value
+        }
 
-    disable = (nb >= 36)
-    if disable:
-        nb = 36
-        btn_value = "No More To Show"
-
-    games = getgames()
-    games_info = getorderedgames(games)
-    dataReply = {
-        'games': list(games_info),
-        'disable': "disable",
-        'btn_value': btn_value
-    }
-    print(jsonify(dataReply))
-    return jsonify(dataReply)
-
-
+        return jsonify(dataReply)
+    else:
+        abort(415)  # Return Unsupported Media Type error
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, port=8080)
+    app.run( debug=True , threaded=True, port=8080)
 
