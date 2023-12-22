@@ -57,6 +57,7 @@ To use the RAWG API, you'll need to obtain an API key from [RAWG API](https://ra
 
 # Update this line in app.py
 api_key = 'your-api-key-here'
+
 ## Screenshots
 
 ![Screenshot 1](static/imgs/screenshot1.png)
