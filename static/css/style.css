@@ -1,4 +1,8 @@
 /* header ---------------------------------------------------------------------------------------------*/
+*::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     font-size: 20px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -8,20 +12,23 @@ body {
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
-    
+
 }
-a{
+
+a {
     text-decoration: none;
 }
-a:hover{
+
+a:hover {
     cursor: pointer;
-    color: black ;
-    
+    color: black;
+
 }
+
 .logo {
     display: flex;
     align-items: center;
-    
+
 }
 
 .logo img {
@@ -29,7 +36,7 @@ a:hover{
     width: 200px;
     transition: .3s ease-out;
     position: absolute;
-    left: 30px;
+    left: 15%;
     bottom: 30%;
 }
 
@@ -37,7 +44,12 @@ a:hover{
     box-shadow: 0px 0px 30px #0077B6;
 }
 
-.nav{
+table {
+    position: ;
+    bottom: 5px;
+}
+
+.nav {
     top: 0px;
     left: 0px;
     background-color: #061A40;
@@ -52,15 +64,15 @@ a:hover{
     width: 100%;
     position: absolute;
     left: 0;
-    
+
 }
 
 .links a {
     color: #fff;
     margin-right: 25px;
     position: relative;
-  }
-  
+}
+
 .links a::before {
     content: '';
     width: 0;
@@ -72,17 +84,18 @@ a:hover{
     left: 50%;
     transition: width .4s, left .3s;
 }
-  
+
 .links a:hover::before {
     width: 100%;
     left: 0;
 }
-form{
+
+form {
     display: flex;
     justify-content: center;
 }
 
-input[type=submit]{
+input[type=button] {
     font-size: 18px;
     font-family: monospace;
     background-color: #f3f7fe;
@@ -98,11 +111,15 @@ input[type=submit]{
     cursor: pointer;
     transition: .3s;
 }
-.btn:hover{
+
+.btn:hover {
     background-color: #3b82f6;
     box-shadow: 0 0 0 5px #3b83f65f;
     color: #fff;
+    transform: scale(1.1);
+
 }
+
 .btn:disabled {
     color: #061A40;
     opacity: 0.5;
@@ -113,28 +130,61 @@ input[type=submit]{
     border: 2px dashed red;
 }
 
+
 /*container -------------------------------------------------------------------------------------------------------------------*/
-.games-container{
+.search {
+    margin-top: 15vh;
+    display: inline-block;
+    position: relative;
+
+}
+
+.search input[type="text"] {
+    width: 500px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search button[type="submit"] {
+    background-color: #4e99e9;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: .9s ease;
+}
+
+.games-container {
     margin-top: 15vh;
     display: grid;
     grid-gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     width: 80%;
     margin-bottom: 20px;
- }
-div img{
+}
+
+div img {
     height: 250px;
-    width :100%;
+    width: 100%;
     border-radius: 5px;
 
 }
-.games-container div{
+
+.games-container div {
     grid-template-rows: 1fr;
     transition: all .4s ease-in-out;
 
 
 }
-.games-container div:hover{
+
+.games-container div:hover {
     transform: scale(1.1);
 }
 
@@ -154,14 +204,17 @@ div img{
     width: 60%;
     text-align: center;
     border-radius: 5px;
+    overflow: scroll;
 
 }
-#popup img{
+
+#popup img {
     width: 40%;
     height: 40%;
     float: left;
 }
-#popup button{
+
+#popup button {
     position: absolute;
     bottom: 0%;
     right: 0%;
@@ -170,6 +223,7 @@ div img{
     border-radius: 2px;
     background-color: #3b82f6;
 }
+
 .popup-text {
     font-size: 16px;
     color: #333;
@@ -199,7 +253,8 @@ div img{
     display: inline-block;
     font-weight: bold;
 }
-.platforms{
+
+.platforms {
     color: black;
     max-width: 30ch;
     overflow: hidden;
@@ -208,7 +263,8 @@ div img{
     display: inline-block;
     font-weight: bold;
 }
-.releasedate{
+
+.releasedate {
     color: black;
     font-weight: bold;
 }
@@ -224,7 +280,8 @@ div img{
     z-index: 999;
     filter: brightness(20%);
 }
-.footer{
+
+.footer {
     margin-top: auto;
     padding-top: 10px;
     background-color: #061A40;
@@ -235,23 +292,132 @@ div img{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    height: 210px;
     margin-bottom: 5px;
     flex-direction: column;
     border-radius: 5px;
     text-align: center;
 }
+
 .footer img {
     margin-top: 5px;
     height: 5vh;
     width: 200px;
     transition: .4s ease-out;
-   
+
 }
-.footer img:hover{
+
+.footer img:hover {
     box-shadow: 0px 0px 30px #0077B6;
 }
-.footer p{
-    max-width: 500px; 
+
+.footer p {
+    max-width: 500px;
     word-wrap: break-word;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    /* Adjust the width as needed */
+    margin: 0 auto;
+    /* Center the icons */
+}
+
+.social-icons a {
+    text-decoration: none;
+    color: #333;
+    /* Adjust the color as needed */
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+    color: #007BFF;
+    /* Adjust the hover color as needed */
+}
+
+.fa-brands {
+    font-size: 32px;
+    /* Adjust the font size as needed */
+    color: white;
+    margin-right: 35px;
+    transition: color 0.3s ease-in-out;
+}
+
+.fa-brands:hover {
+    font-size: 32px;
+    /* Adjust the font size as needed */
+    color: #007BFF;
+}
+
+.td {
+    text-align: left;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+    .logo img {
+        height: 5vh;
+        width: 100px;
+        transition: .3s ease-out;
+        position: absolute;
+        left: 15%;
+        bottom: 30%;
+    }
+
+    .search input[type="text"] {
+        width: 250px;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .name {
+        font-weight: bold;
+        color: #061A40;
+        font-size: 22px;
+        text-align: center;
+        padding-left: 5px;
+        text-decoration: underline;
+        margin-bottom: 50px;
+    }
+
+    .rating {
+        color: black;
+        font-weight: bold;
+    }
+
+    .tags {
+        color: black;
+        max-width: 10ch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .platforms {
+        color: black;
+        max-width: 10ch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .releasedate {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+
 }

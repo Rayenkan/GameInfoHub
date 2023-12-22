@@ -8,8 +8,6 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/loadmore": {"origins": "http://127.0.0.1:8080"}})
 
 nb = 6
-btn_value="Show More"
-disable = False
 
 def getgames(nb):
     api_url = "https://api.rawg.io/api/games"
@@ -27,6 +25,43 @@ def getgames(nb):
     else:
         print(f"Error {response.status_code}: {response.text}")
         return None
+
+
+def search_games_by_name(game_name):
+    api_url = "https://api.rawg.io/api/games"
+
+    params = {
+        'key': 'e987444dc539477fb7d6dbf09a611868',
+        'search': game_name
+    }
+
+    response = requests.get(api_url, params=params)
+
+    if response.status_code == 200:
+        results = response.json().get("results")
+
+        if results:
+            first_game_data = results[0]
+
+            game_info = {
+                "name": first_game_data.get('name'),
+                "platforms": [platform["platform"]["name"] for platform in first_game_data["platforms"]],
+                "stores": [store["store"]["name"] for store in first_game_data["stores"]],
+                "release_date": first_game_data.get('released'),
+                "image_link": first_game_data.get('background_image'),
+                "rating": first_game_data.get('rating'),
+                "tags": [tag["name"] for tag in first_game_data["tags"] if re.match("^[a-zA-Z]", tag["name"])]
+            }
+            game_info["platforms"] = " ".join(game_info["platforms"])
+            game_info["stores"] = " ".join(game_info["stores"])
+            game_info["tags"] = " ".join(game_info["tags"])
+
+            return [game_info]  # Returning as a list for consistency with your previous code
+        else:
+            return None
+    else:
+        return None
+
 
 def getorderedgames (games):
     games_info = []
@@ -53,9 +88,7 @@ def getorderedgames (games):
 @app.route('/', methods=['GET'])
 def index():
 
-    global btn_value
     global nb
-    global disable
     games = getgames(nb)
     games_info = getorderedgames(games)
     nb=len(games_info)
@@ -68,9 +101,7 @@ def index():
 
 @app.route('/loadmore', methods=['POST'])
 def loadmore():
-    global btn_value
     global nb
-    global disable
 
     if request.headers['Content-Type'] == 'application/json':
         data = request.get_json()
@@ -88,13 +119,31 @@ def loadmore():
 
         dataReply = {
             'games': list(games_info),
-            'disable': "disable",
-            'btn_value': btn_value
         }
 
         return jsonify(dataReply)
     else:
         abort(415)  # Return Unsupported Media Type error
+
+@app.route('/search', methods=["POST"])
+def search():
+    if request.headers['Content-Type'] == 'application/json':
+        data = request.get_json()
+        game_name = data.get('page_data')  # Correctly accessing the 'page_data' key
+        print(game_name)
+        response = search_games_by_name(game_name)
+        print(response)
+
+        if response is not None:
+            return jsonify(response)
+        else:
+            # Handle the case when the search function returns None (e.g., no results or an error)
+            return jsonify({"error": "No results found"})
+    else:
+        # Handle the case when the request is not in JSON format
+        return jsonify({"error": "Invalid request format"})
+
+
 if __name__ == '__main__':
     app.run( debug=True , threaded=True, port=8080)
 
