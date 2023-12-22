@@ -2,10 +2,8 @@ from flask import Flask, render_template, request, jsonify , abort
 import requests
 import re
 
-from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r"/loadmore": {"origins": "http://127.0.0.1:8080"}})
 
 nb = 6
 
@@ -130,9 +128,7 @@ def search():
     if request.headers['Content-Type'] == 'application/json':
         data = request.get_json()
         game_name = data.get('page_data')  # Correctly accessing the 'page_data' key
-        print(game_name)
         response = search_games_by_name(game_name)
-        print(response)
 
         if response is not None:
             return jsonify(response)
