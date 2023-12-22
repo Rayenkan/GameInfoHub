@@ -55,7 +55,6 @@ To run this project locally, follow these steps:
 
 To use the RAWG API, you'll need to obtain an API key from [RAWG API](https://rawg.io/apidocs). Once obtained, replace the placeholder in the code with your actual API key.
 
-```python
 # Update this line in app.py
 api_key = 'your-api-key-here'
 ## Screenshots
