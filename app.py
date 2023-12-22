@@ -54,7 +54,7 @@ def search_games_by_name(game_name):
             game_info["stores"] = " ".join(game_info["stores"])
             game_info["tags"] = " ".join(game_info["tags"])
 
-            return [game_info]  # Returning as a list for consistency with your previous code
+            return [game_info]  # 
         else:
             return None
     else:
@@ -75,7 +75,6 @@ def getorderedgames (games):
                 "tags": [tag["name"] for tag in game_data["tags"] if re.match("^[a-zA-Z]", tag["name"])]
             })
 
-        # Convert lists to strings
 
         for i in range(nb):
             games_info[i]["platforms"] = " ".join(games_info[i]["platforms"])

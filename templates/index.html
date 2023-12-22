@@ -18,7 +18,7 @@
         <input placeholder="Search..." type="text" id="search">
         <button type="submit" class="btn" onclick="search()">Go</button>
     </div>    
-    <div id="games-container" class="games-container"> <!-- Add this div -->
+    <div id="games-container" class="games-container"> 
         {% for game in games %}
             <div class="item" onclick="openPopup('{{ game['image_link'] }}', '{{ game['name'] }}', '{{ game['platforms'] }}', '{{ game['release_date'] }}', '{{ game['rating'] }}', '{{ game['tags'] }}')">
                 <img src="{{ game['image_link'] }}" alt="">
