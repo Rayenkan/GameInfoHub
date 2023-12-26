@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify , abort
 import requests
 import re
+from flask_cors import CORS
+
 
 
 app = Flask(__name__)
-
+CORS(app)
 nb = 6
 
 def getgames(nb):

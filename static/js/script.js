@@ -16,7 +16,6 @@ async function loadmore() {
         });
         if (nb >= 30) {
             document.getElementById("btn").disabled = true;
-            document.getElementById("btn")
         }
         if (response.ok) {
             const dataReply = await response.json();
@@ -53,7 +52,7 @@ async function search() {
     try {
         const pageData = document.getElementById("search").value;
 
-        const response = await fetch("http://127.0.0.1:8080/search", {
+        const response = await fetch("/search", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -62,21 +61,24 @@ async function search() {
                 page_data: pageData,
             }),
         });
-
+        console.log(response)
         if (response.ok) {
             const dataReply = await response.json();
 
             // Check if there are games in the response
             if (dataReply && dataReply.length > 0) {
+                // Reset the input field if results are found
+                document.getElementById("search").value = "";
                 const firstGame = dataReply[0];
                 openPopup(firstGame.image_link, firstGame.name, firstGame.platforms, firstGame.release_date, firstGame.rating, firstGame.tags);
             } else {
                 // Handle the case when no results are found
                 console.log("No results found");
+                document.getElementById("search").value = "Game Not Found !!";
             }
-        } else {
-            document.getElementById("search").value = "Game Not Found !!"
+            
         }
+
     } catch (error) {
         console.error("Error:", error);
     }
